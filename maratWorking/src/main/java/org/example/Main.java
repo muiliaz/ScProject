@@ -1,7 +1,10 @@
 package org.example;
 
+import com.sun.tools.jdeprscan.scan.Scan;
+
 import java.sql.*;
 import java.util.Objects;
+import java.util.Scanner;
 
 class User{
     private String email, password, school, name_of_school, grade, location, name, username, schoolData;
@@ -104,10 +107,40 @@ public class Main {
         User currentUser = getUserProperties();
         boolean is_stuff = stuffChecker(currentUser.getName(), currentUser.getPassword());
         if(is_stuff){
-
+            Scanner scanner = new Scanner(System.in);
+            String courseTitle = scanner.nextLine();
+            String courseType = scanner.nextLine();
+            addCourseInDB(courseTitle, courseType);
         }else {
             System.out.println("У вас нет прав для использования этой функции");
         }
+    }
+
+    public static void addCourseMaterial(String courseTitle, String courseType){
+        Scanner scanner = new Scanner(System.in);
+        String lessonTitle = scanner.nextLine();
+        String newLink = scanner.nextLine();
+
+    }
+
+    private static void addCourseInDB(String courseTitle, String courseType) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/project";
+        String uname = "root";
+        String pass = "E869608b";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Connection connection = DriverManager.getConnection(url, uname, pass);
+        Statement statement = connection.createStatement();
+        //end of the logining into
+
+        ResultSet resultSet = statement.executeQuery("INSERT INTO courses (title, payness) " +
+                "VALUES (" + courseTitle + "," + courseType + ");");
+
+        resultSet.close();
+        statement.close();
     }
 
     private static boolean stuffChecker(String name, String password) {
