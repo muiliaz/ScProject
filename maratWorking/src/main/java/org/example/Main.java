@@ -110,7 +110,7 @@ class User{
 
 @Service
 class UserService {
-    private final UserRepository userRepository;
+    private final UserRepository us0erRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
